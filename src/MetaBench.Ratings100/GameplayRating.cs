@@ -11,15 +11,7 @@ internal static class GameplayRating
             return 0f;
         }
 
-        var resolvedRole = RatingEngine.ResolveRole(player);
-        var primaryRole = resolvedRole == RatingEngine.EffectiveRole.Entry
-            ? RatingRole.Entry
-            : ToPrimaryRole(player.MainRole);
-        var secondaryRole = resolvedRole == RatingEngine.EffectiveRole.Entry
-            ? null
-            : ToSecondaryRole(player.SecondaryRole);
-
-        return Calculate(player, primaryRole, secondaryRole, player.IsIGL);
+        return Calculate(player, ToPrimaryRole(player.MainRole), ToSecondaryRole(player.SecondaryRole), player.IsIGL);
     }
 
     internal static float CalculateAsRole(DataPlayer player, PlayerMainRole role, bool asIgl)

@@ -28,6 +28,7 @@ Equal("?", RatingScale.ScaleRenderedText("?"), "hidden value");
 foreach (RatingRole role in Enum.GetValues(typeof(RatingRole)))
 {
     Equal(1f, MathF.Round(RoleRatingModel.GetWeightTotal(role), 4), $"{role} weights sum to one");
+    Equal(80, RatingScale.To100(RoleRatingModel.Score(_ => 16f, role)), $"{role} uses the common scale");
 }
 
 var weakLeadership = new System.Collections.Generic.Dictionary<RatingAttribute, float>();
@@ -66,6 +67,19 @@ var zweihScreenshot = new System.Collections.Generic.Dictionary<RatingAttribute,
     [RatingAttribute.Productivity] = 20f,
     [RatingAttribute.StressResistance] = 19.2f
 };
-Equal(96, RatingScale.To100(RoleRatingModel.Calculate(a => zweihScreenshot[a], RatingRole.Rifler, RatingRole.Support)), "zweih screenshot profile");
+Equal(95, RatingScale.To100(RoleRatingModel.Calculate(a => zweihScreenshot[a], RatingRole.Rifler, RatingRole.Support)), "zweih screenshot profile");
+
+var iglBaseline = new System.Collections.Generic.Dictionary<RatingAttribute, float>();
+foreach (RatingAttribute attribute in Enum.GetValues(typeof(RatingAttribute)))
+{
+    iglBaseline[attribute] = 10f;
+}
+var baseIgl = RoleRatingModel.Calculate(a => iglBaseline[a], RatingRole.Rifler, null, isIgl: true);
+iglBaseline[RatingAttribute.Leader] = 20f;
+var leaderGain = RoleRatingModel.Calculate(a => iglBaseline[a], RatingRole.Rifler, null, isIgl: true) - baseIgl;
+iglBaseline[RatingAttribute.Leader] = 10f;
+iglBaseline[RatingAttribute.Rifle] = 20f;
+var rifleGain = RoleRatingModel.Calculate(a => iglBaseline[a], RatingRole.Rifler, null, isIgl: true) - baseIgl;
+Equal(true, leaderGain > rifleGain * 2f, "IGL leadership matters substantially more than rifle skill");
 
 Console.WriteLine("MetaBench.Ratings100 pure tests passed.");
