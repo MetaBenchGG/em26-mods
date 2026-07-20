@@ -24,7 +24,10 @@ internal static class RatingTextOverlay
         try
         {
             var overlayRoot = image.transform.parent ?? image.transform;
-            var label = GetOrCreateLabel(overlayRoot, template);
+            // Position the number in the exact rectangle previously occupied by
+            // the filled star layer. The parent is used only to find and hide
+            // the remaining empty/background star graphics.
+            var label = GetOrCreateLabel(image.transform, template);
             if (label == null)
             {
                 return;
@@ -71,15 +74,13 @@ internal static class RatingTextOverlay
         label.overflowMode = TextOverflowModes.Overflow;
         label.raycastTarget = false;
         label.fontStyle = FontStyles.Bold;
-        label.enableAutoSizing = true;
-        label.fontSize = 22f;
-        label.fontSizeMin = 16f;
-        label.fontSizeMax = 26f;
+        label.enableAutoSizing = false;
+        label.fontSize = 18f;
 
         if (template != null)
         {
             label.font = template.font;
-            label.fontSizeMax = Math.Max(22f, Math.Min(34f, template.fontSize * 1.65f));
+            label.fontSize = Math.Max(18f, Math.Min(30f, template.fontSize * 1.3f));
         }
         else if (TMP_Settings.defaultFontAsset != null)
         {

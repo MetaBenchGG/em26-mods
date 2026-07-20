@@ -44,7 +44,7 @@ displayed as 0–100 directly. All visible values are rounded to whole numbers.
 
 ## Implementation status
 
-`MetaBench.Ratings100` 0.1.1 builds against the installed IL2CPP interop assemblies.
+`MetaBench.Ratings100` 0.1.2 builds against the installed IL2CPP interop assemblies.
 Pure conversion tests pass, and the built DLL is installed locally. Runtime loading
 and layout validation require a game restart because BepInEx cannot hot-load a plugin
 into the game process that was already running during installation.
