@@ -1,0 +1,28 @@
+# Local game and modding dependencies
+lib/
+game/
+references/
+artifacts/
+
+# Build output
+bin/
+obj/
+dist/
+*.user
+*.suo
+
+# Proprietary or generated binaries
+*.dll
+*.pdb
+*.mdb
+*.mpack
+
+# Tooling and editors
+.idea/
+.vscode/
+.DS_Store
+
+# Local logs and configuration
+*.log
+*.cfg
+*.local.*
