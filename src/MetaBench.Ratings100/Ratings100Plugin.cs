@@ -11,7 +11,7 @@ public sealed class Ratings100Plugin : BasePlugin
 {
     public const string PluginGuid = "gg.metabench.em26.ratings100";
     public const string PluginName = "MetaBench Ratings100";
-    public const string PluginVersion = "0.2.0-beta.2";
+    public const string PluginVersion = "0.2.0-beta.3";
 
     private Harmony? _harmony;
     private static bool _loggedGameplayFallback;
@@ -39,6 +39,21 @@ public sealed class Ratings100Plugin : BasePlugin
             "RoleAwareRatings",
             true,
             "Replace EM26 player ratings with role-aware ratings. Disable to keep the UI-only 0-100 conversion.").Value;
+        GameplayRatingPatches.MarketExponent = Config.Bind(
+            "Market",
+            "SkillExponent",
+            MarketRatingModel.DefaultExponent,
+            "How strongly the role-aware rating affects the native market skill component.").Value;
+        GameplayRatingPatches.MarketMinMultiplier = Config.Bind(
+            "Market",
+            "MinSkillMultiplier",
+            MarketRatingModel.DefaultMinMultiplier,
+            "Lower safety limit for the market skill adjustment.").Value;
+        GameplayRatingPatches.MarketMaxMultiplier = Config.Bind(
+            "Market",
+            "MaxSkillMultiplier",
+            MarketRatingModel.DefaultMaxMultiplier,
+            "Upper safety limit for the market skill adjustment.").Value;
 
         var uiHooks = RatingPatchInstaller.Install(_harmony, Log);
         var gameplayHooks = RatingPatchInstaller.InstallGameplay(_harmony, Log);

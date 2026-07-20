@@ -82,4 +82,9 @@ iglBaseline[RatingAttribute.Rifle] = 20f;
 var rifleGain = RoleRatingModel.Calculate(a => iglBaseline[a], RatingRole.Rifler, null, isIgl: true) - baseIgl;
 Equal(true, leaderGain > rifleGain * 2f, "IGL leadership matters substantially more than rifle skill");
 
+Equal(100f, MarketRatingModel.ReplaceSkillComponent(100f, 15f, 15f), "same market rating keeps native component");
+Equal(204f, MathF.Round(MarketRatingModel.ReplaceSkillComponent(100f, 14.2f, 18f)), "zweih-like market uplift");
+Equal(250f, MarketRatingModel.ReplaceSkillComponent(100f, 5f, 20f), "market uplift is capped");
+Equal(40f, MarketRatingModel.ReplaceSkillComponent(100f, 20f, 1f), "market reduction is capped");
+
 Console.WriteLine("MetaBench.Ratings100 pure tests passed.");

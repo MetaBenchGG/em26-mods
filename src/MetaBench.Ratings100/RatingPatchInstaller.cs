@@ -40,6 +40,7 @@ internal static class RatingPatchInstaller
         installed += PatchMethod(harmony, log, AccessTools.PropertyGetter(typeof(DataPlayer), nameof(DataPlayer.Rating)), nameof(GameplayRatingPatches.PlayerRatingPrefix));
         installed += PatchMethod(harmony, log, AccessTools.Method(typeof(RatingEngine), nameof(RatingEngine.GetRoleRating), new[] { typeof(DataPlayer) }), nameof(GameplayRatingPatches.RoleRatingPrefix));
         installed += PatchMethod(harmony, log, AccessTools.Method(typeof(DataPlayer), nameof(DataPlayer.CalculatePowerAsRole), new[] { typeof(PlayerMainRole), typeof(bool) }), nameof(GameplayRatingPatches.PowerAsRolePrefix));
+        installed += PatchPostfix(harmony, log, AccessTools.Method(typeof(DataPlayer), nameof(DataPlayer.GetSkillComp), new[] { typeof(DataPlayer) }), nameof(GameplayRatingPatches.MarketSkillPostfix));
         return installed;
     }
 
@@ -112,6 +113,27 @@ internal static class RatingPatchInstaller
         catch (Exception exception)
         {
             log.LogWarning($"[MetaBench Ratings100] failed to install gameplay hook {prefixName}: {exception.Message}");
+            return 0;
+        }
+    }
+
+    private static int PatchPostfix(Harmony harmony, ManualLogSource log, MethodInfo? original, string postfixName)
+    {
+        try
+        {
+            var postfix = AccessTools.Method(typeof(GameplayRatingPatches), postfixName);
+            if (original == null || postfix == null)
+            {
+                log.LogWarning($"[MetaBench Ratings100] missing gameplay hook for {postfixName}; hook skipped.");
+                return 0;
+            }
+
+            harmony.Patch(original, postfix: new HarmonyMethod(postfix));
+            return 1;
+        }
+        catch (Exception exception)
+        {
+            log.LogWarning($"[MetaBench Ratings100] failed to install gameplay hook {postfixName}: {exception.Message}");
             return 0;
         }
     }

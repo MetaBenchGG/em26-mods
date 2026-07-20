@@ -16,6 +16,10 @@ The replacement is applied to `DataPlayer.Rating`, `RatingEngine.GetRoleRating`,
 
 Set `Gameplay.RoleAwareRatings=false` in `BepInEx/config/gg.metabench.em26.ratings100.cfg` to return to UI-only mode.
 
+### Market value
+
+Version `0.2.0-beta.3` replaces EM26's isolated `GetSkillComp` contribution using the ratio between the role-aware rating and the native role rating. The default cubic curve makes elite-rating differences meaningful while retaining every other native market factor. The adjustment is limited to `0.4x–2.5x` to protect existing careers from extreme values.
+
 ### Role weights
 
 All columns sum to 100%, so an identical set of attributes produces the same overall rating in every role. Zero means that an irrelevant attribute cannot lower that role's rating.

@@ -24,6 +24,16 @@ internal static class GameplayRating
         return Calculate(player, ToPrimaryRole(role), ToSecondaryRole(player.SecondaryRole), asIgl);
     }
 
+    internal static float CalculateNative(DataPlayer player)
+    {
+        if (player == null)
+        {
+            return 0f;
+        }
+
+        return RatingEngine.ComputeRating(player, RatingEngine.ResolveRole(player));
+    }
+
     private static float Calculate(DataPlayer player, RatingRole primary, RatingRole? secondary, bool isIgl) =>
         RoleRatingModel.Calculate(attribute => player.GetEffectiveAttribute(ToGameAttribute(attribute)), primary, secondary, isIgl);
 

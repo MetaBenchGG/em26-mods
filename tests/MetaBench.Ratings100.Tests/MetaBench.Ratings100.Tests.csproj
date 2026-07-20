@@ -9,5 +9,6 @@
   <ItemGroup>
     <Compile Include="../../src/MetaBench.Ratings100/RatingScale.cs" Link="RatingScale.cs" />
     <Compile Include="../../src/MetaBench.Ratings100/RoleRatingModel.cs" Link="RoleRatingModel.cs" />
+    <Compile Include="../../src/MetaBench.Ratings100/MarketRatingModel.cs" Link="MarketRatingModel.cs" />
   </ItemGroup>
 </Project>
