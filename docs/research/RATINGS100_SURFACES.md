@@ -60,3 +60,19 @@ Build a read-only diagnostic plugin that logs, for representative players:
 
 Once the observed range and precision are known, define the 0–100 mapping, add pure
 unit tests, and patch `SquadPlayerRow` plus `PlayerOverview` first.
+
+## Version 0.2 integration decision
+
+The authoritative seam is the computed player rating, not persisted `_rating` data:
+
+| Entry point | Consumers covered |
+| --- | --- |
+| `DataPlayer.Rating` | UI, conditions, wage/price helpers and generic player comparisons |
+| `RatingEngine.GetRoleRating` | Direct role-rating callers bypassing the virtual property |
+| `DataPlayer.CalculatePowerAsRole` | AI comparisons for a requested role |
+
+`DataPlayer.CalculatePower()` remains native. It has 39 native callers and layers form, health and current-state effects over the player's rating. Replacing its input retains those EM26 systems while changing underlying role ability.
+
+Transfer cost and wages are not replaced wholesale. EM26 keeps PR, contract, age, honours, team strength and market modifiers; their skill input resolves through the patched rating. This prevents double multipliers and improves compatibility with economy mods.
+
+The calculation runs for every `DataPlayer`, including generated players, free agents and AI squads. It does not migrate the save database.

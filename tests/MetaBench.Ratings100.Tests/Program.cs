@@ -25,4 +25,47 @@ Equal("2029-05-12", RatingScale.ScaleRenderedText("2029-05-12"), "date is untouc
 Equal("84%", RatingScale.ScaleRenderedText("84%"), "large percentage is untouched");
 Equal("?", RatingScale.ScaleRenderedText("?"), "hidden value");
 
+foreach (RatingRole role in Enum.GetValues(typeof(RatingRole)))
+{
+    Equal(1f, MathF.Round(RoleRatingModel.GetWeightTotal(role), 4), $"{role} weights sum to one");
+}
+
+var weakLeadership = new System.Collections.Generic.Dictionary<RatingAttribute, float>();
+foreach (RatingAttribute attribute in Enum.GetValues(typeof(RatingAttribute)))
+{
+    weakLeadership[attribute] = 19f;
+}
+weakLeadership[RatingAttribute.Leader] = 4f;
+weakLeadership[RatingAttribute.AWP] = 12f;
+
+var supportRifler = RoleRatingModel.Calculate(a => weakLeadership[a], RatingRole.Rifler, RatingRole.Support);
+Equal(95, RatingScale.To100(supportRifler), "support rifler ignores irrelevant leadership and AWP");
+
+var awper = RoleRatingModel.Calculate(a => weakLeadership[a], RatingRole.AWPer);
+Equal(true, RatingScale.To100(awper) < 90, "AWPer is penalized for weak AWP");
+
+var igl = RoleRatingModel.Calculate(a => weakLeadership[a], RatingRole.Rifler, null, isIgl: true);
+Equal(true, RatingScale.To100(igl) < RatingScale.To100(supportRifler), "IGL is penalized for weak leadership");
+
+var zweihScreenshot = new System.Collections.Generic.Dictionary<RatingAttribute, float>
+{
+    [RatingAttribute.Skill] = 20f,
+    [RatingAttribute.AWP] = 13.4f,
+    [RatingAttribute.Rifle] = 20f,
+    [RatingAttribute.Pistol] = 17.8f,
+    [RatingAttribute.Grenades] = 17.4f,
+    [RatingAttribute.Reaction] = 19.8f,
+    [RatingAttribute.Eyesight] = 19.6f,
+    [RatingAttribute.Strength] = 19f,
+    [RatingAttribute.Endurance] = 19.4f,
+    [RatingAttribute.Creativity] = 18.6f,
+    [RatingAttribute.Clutch] = 19f,
+    [RatingAttribute.Tactic] = 18.2f,
+    [RatingAttribute.Leader] = 4f,
+    [RatingAttribute.Teamwork] = 19.4f,
+    [RatingAttribute.Productivity] = 20f,
+    [RatingAttribute.StressResistance] = 19.2f
+};
+Equal(96, RatingScale.To100(RoleRatingModel.Calculate(a => zweihScreenshot[a], RatingRole.Rifler, RatingRole.Support)), "zweih screenshot profile");
+
 Console.WriteLine("MetaBench.Ratings100 pure tests passed.");
