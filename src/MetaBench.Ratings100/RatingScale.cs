@@ -27,6 +27,24 @@ public static class RatingScale
         return Math.Max(0, Math.Min(100, scaled));
     }
 
+    public static int PotentialTo100(float value)
+    {
+        if (float.IsNaN(value) || float.IsInfinity(value))
+        {
+            return 0;
+        }
+
+        // EM26 stores player potential as a normalized 0–1 value while most
+        // person ratings and attributes use 0–20.
+        if (value <= 1.0001f)
+        {
+            var scaled = (int)Math.Round(value * 100f, MidpointRounding.AwayFromZero);
+            return Math.Max(0, Math.Min(100, scaled));
+        }
+
+        return To100(value);
+    }
+
     public static string ScaleRenderedText(string? text)
     {
         if (string.IsNullOrEmpty(text))
@@ -55,14 +73,8 @@ public static class RatingScale
                 return match.Value;
             }
 
-            var scaled = value * Multiplier;
-            var result = scaled.ToString("0.##", CultureInfo.InvariantCulture);
-            if (numberText.Contains(','))
-            {
-                result = result.Replace('.', ',');
-            }
-
-            return match.Groups["sign"].Value + result;
+            var scaled = (int)Math.Round(value * Multiplier, MidpointRounding.AwayFromZero);
+            return match.Groups["sign"].Value + scaled.ToString(CultureInfo.InvariantCulture);
         });
     }
 }

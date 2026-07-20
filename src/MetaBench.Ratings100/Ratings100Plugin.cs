@@ -11,7 +11,7 @@ public sealed class Ratings100Plugin : BasePlugin
 {
     public const string PluginGuid = "gg.metabench.em26.ratings100";
     public const string PluginName = "MetaBench Ratings100";
-    public const string PluginVersion = "0.1.0";
+    public const string PluginVersion = "0.1.1";
 
     private Harmony? _harmony;
 

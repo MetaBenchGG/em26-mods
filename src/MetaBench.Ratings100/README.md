@@ -4,6 +4,10 @@ Displays Esports Manager 2026 person ratings, potential and attributes on a 0–
 scale. The conversion is intentionally direct: every original 0–20 value is
 multiplied by five.
 
+All displayed values are rounded to whole numbers. Potential uses its native 0–1
+storage range and is displayed as 0–100. Star graphics are fully hidden rather than
+left behind the numeric label.
+
 The mod changes UI only. It does not write converted values to saves and does not
 change match simulation, development, transfers or AI decisions.
 

@@ -14,7 +14,7 @@ internal static class RatingUiPatches
 
         var player = __instance._player;
         RatingTextOverlay.Show(__instance._rating, player.Rating, __instance._nick);
-        RatingTextOverlay.Show(__instance._potential, player.Potential, __instance._nick);
+        RatingTextOverlay.Show(__instance._potential, player.Potential, __instance._nick, isPotential: true);
     }
 
     internal static void SquadStaffRowPostfix(SquadStaffRow __instance)
@@ -35,7 +35,7 @@ internal static class RatingUiPatches
 
         var player = __instance._player;
         RatingTextOverlay.Show(__instance._rating, player.Rating, __instance._nameTxt);
-        RatingTextOverlay.Show(__instance._potential, player.Potential, __instance._nameTxt);
+        RatingTextOverlay.Show(__instance._potential, player.Potential, __instance._nameTxt, isPotential: true);
     }
 
     internal static void StaffOverviewPostfix(StaffOverview __instance)
@@ -60,7 +60,7 @@ internal static class RatingUiPatches
         var player = user.TryCast<DataPlayer>();
         if (player != null)
         {
-            RatingTextOverlay.Show(__instance._potential, player.Potential, __instance._nick);
+            RatingTextOverlay.Show(__instance._potential, player.Potential, __instance._nick, isPotential: true);
         }
     }
 

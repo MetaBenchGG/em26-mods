@@ -31,8 +31,9 @@ underlying save values and game simulation unchanged.
 - [x] Cover the primary profile, squad, scouting, transfer and training surfaces.
 - [ ] Perform visual runtime validation after restarting the currently running game.
 
-Version 0.1 deliberately uses no normalization or hidden weighting. A native rating
-of 16.5 is shown as 83; 20 is shown as 100. The conversion is presentation-only.
+Version 0.1 deliberately uses no hidden weighting. A native rating of 16.5 is shown
+as 83; 20 is shown as 100. Potential is natively normalized to 0–1 and is therefore
+displayed as 0–100 directly. All visible values are rounded to whole numbers.
 
 ## Acceptance criteria
 
@@ -43,7 +44,7 @@ of 16.5 is shown as 83; 20 is shown as 100. The conversion is presentation-only.
 
 ## Implementation status
 
-`MetaBench.Ratings100` 0.1.0 builds against the installed IL2CPP interop assemblies.
+`MetaBench.Ratings100` 0.1.1 builds against the installed IL2CPP interop assemblies.
 Pure conversion tests pass, and the built DLL is installed locally. Runtime loading
 and layout validation require a game restart because BepInEx cannot hot-load a plugin
 into the game process that was already running during installation.

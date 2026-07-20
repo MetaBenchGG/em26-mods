@@ -24,7 +24,7 @@ save data or simulation balance.
 ## Status
 
 - AutoTraining 1.2.0 has been installed and validated as an external baseline mod.
-- Ratings100 0.1.0 is implemented, tested, built and installed for local runtime validation.
+- Ratings100 0.1.1 is implemented, tested, built and installed for local runtime validation.
 - Dynamic development, market value, HLTV-like ratings and the career wiki follow later.
 
 See [the roadmap](docs/ROADMAP.md) and [Ratings100 specification](docs/RATINGS100.md).
